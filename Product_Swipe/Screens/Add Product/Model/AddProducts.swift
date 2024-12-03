@@ -8,14 +8,24 @@
 import Foundation
 import UIKit
 
-//{
-//    "message": "Product added Successfully!",
-//    "product_details": {
-//        //details of added product
-//},
-//"product_id": 2657, "success": true
-//}
+//For network
+struct AddProductsOffline: Codable {
+    let productName: String
+    let productType: String
+    let price: Double
+    let tax: Double
+    let imageData: Data? // Store image as Data
+    
+    init(productName: String, productType: String, price: Double, tax: Double, image: UIImage?) {
+        self.productName = productName
+        self.productType = productType
+        self.price = price
+        self.tax = tax
+        self.imageData = image?.jpegData(compressionQuality: 0.8)
+    }
+}
 
+//for Api 
 struct AddProducts: Encodable {
     let productName: String
     let productType: String

@@ -15,6 +15,10 @@ class ProductViewController: UIViewController {
     
     private var productVm = ProductViewModel()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
@@ -25,8 +29,15 @@ class ProductViewController: UIViewController {
     
     private func setupUI() {
         searchView.layer.cornerRadius = 10
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        view.addGestureRecognizer(gesture)
+        view.isUserInteractionEnabled = true
     }
     
+    @objc func viewTapped() {
+        view.endEditing(true)
+    }
     private func setUpTableView() {
         tableView.register(UINib(nibName: "ProductTableViewCell", bundle: nil), forCellReuseIdentifier: "ProductTableViewCell")
         tableView.delegate = self

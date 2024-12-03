@@ -25,6 +25,7 @@ protocol EndPointTypes {
 enum EndPointItems {
     case product
     case addProduct(addProduct: AddProducts)
+    case addProductOffline(addProduct: AddProductsOffline)
 }
 
 extension EndPointItems: EndPointTypes {
@@ -33,6 +34,8 @@ extension EndPointItems: EndPointTypes {
         case .product:
             return "get"
         case .addProduct:
+            return "add"
+        case .addProductOffline:
             return "add"
         }
     }
@@ -51,6 +54,8 @@ extension EndPointItems: EndPointTypes {
             return .get
         case .addProduct:
             return .post
+        case .addProductOffline:
+            return .post
         }
     }
     
@@ -60,6 +65,8 @@ extension EndPointItems: EndPointTypes {
             return nil
         case .addProduct(let addProduct):
             return addProduct
+        case .addProductOffline(let addProductOffline):
+            return addProductOffline
         }
     }
     
@@ -68,6 +75,8 @@ extension EndPointItems: EndPointTypes {
         case .product:
             return false
         case .addProduct:
+            return true
+        case .addProductOffline:
             return true
         }
     }

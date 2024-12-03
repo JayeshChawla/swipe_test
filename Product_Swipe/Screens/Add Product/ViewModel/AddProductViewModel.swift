@@ -10,14 +10,25 @@ import UIKit
 
 class AddProductViewModel {
     
-    func setProductDetails(with product: AddProducts, completion: @escaping(Result<AddProductResponse, Error>) -> Void) {
+    func setProductDetails(with product: AddProducts, completion: @escaping(Result<AddProductResponse?, Error>) -> Void) {
         Task {
             do {
-                let addProductResponse = try await ApiManager.shared.request(modelType: AddProductResponse.self, type: EndPointItems.addProduct(addProduct: product))
-                completion(.success(addProductResponse))
+                if NetworkMonitor.shared.isConnected {
+                    let addProductResponse = try await ApiManager.shared.request(modelType: AddProductResponse.self, type: EndPointItems.addProduct(addProduct: product))
+                    completion(.success(addProductResponse))
+                } else {
+                    let productsOffline = AddProductsOffline(productName: product.productName, productType: product.productType, price: product.price, tax: product.tax, image: product.image)
+                    saveOffline(productsOffline)
+                    completion(.success(nil))
+                }
             } catch {
                 completion(.failure(error))
             }
         }
+    }
+    
+    private func saveOffline(_ product: AddProductsOffline) {
+        OfflineStorageManager.shared.saveProduct(product)
+        print("Product saved offline")
     }
 }

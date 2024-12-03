@@ -15,6 +15,7 @@ class AddProductsViewController: UIViewController {
     @IBOutlet weak var productRateView: UIView!
     @IBOutlet weak var productPriceView: UIView!
     @IBOutlet weak var productNameView: UIView!
+    @IBOutlet weak var mainView: UIView!
     
 //MARK: Text Fields
     @IBOutlet weak var productRateTf: UITextField!
@@ -49,6 +50,7 @@ class AddProductsViewController: UIViewController {
         self.validationForProduct()
     }
     @IBAction func backBtn(_ sender: Any) {
+        self.view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
     }
 }
@@ -60,7 +62,12 @@ extension AddProductsViewController {
         [productNameView, productRateView, productPriceView, productImageView].forEach { view in
             view?.layer.cornerRadius = 8
         }
-        
+        [productNameTf, productPriceTf, productRateTf].forEach { tf in
+            tf?.addTarget(self, action: #selector(textFieldSelected), for: .allEvents)
+        }
+        [productRateTf, productPriceTf].forEach { tf in
+            tf?.addTarget(self, action: #selector(numberPadSelected), for: .allEvents)
+        }
         submitButton.layer.cornerRadius = 25.5
         
         imageVIew.isUserInteractionEnabled = true
@@ -68,10 +75,24 @@ extension AddProductsViewController {
         imageVIew.addGestureRecognizer(tapGesture)
         productTypeTf.addTarget(self, action: #selector(productTypeSelected), for: .allEvents)
         
+        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(mainViewTapped))
+        mainView.addGestureRecognizer(keyboardGesture)
+        mainView.isUserInteractionEnabled = true
+        
         pickerView.delegate = self
         pickerView.dataSource = self
     }
     
+    @objc func mainViewTapped() {
+        view.endEditing(true)
+    }
+    @objc func numberPadSelected() {
+        productPriceTf.keyboardType = .numberPad
+        productRateTf.keyboardType = .numberPad
+    }
+    @objc func textFieldSelected() {
+        pickerView.isHidden = true
+    }
     @objc func imageSelection() {
         self.imageselect()
     }
@@ -114,8 +135,18 @@ extension AddProductsViewController {
         addProductVm.setProductDetails(with: product) { result in
             switch result {
             case .success(let response):
-                self.showAlert(message: response.message)
+                DispatchQueue.main.async {
+                    self.showLoading(false)
+                }
+                if NetworkMonitor.shared.isConnected {
+                    self.showAlert(message: response!.message )
+                } else {
+                    self.showAlert(message: "Product Saved Offline.")
+                }
             case.failure(let error):
+                DispatchQueue.main.async {
+                    self.showLoading(false)
+                }
                 self.showAlert(message: "Failed to add product: \(error.localizedDescription)")
             }
         }
@@ -124,69 +155,6 @@ extension AddProductsViewController {
 }
 
 extension AddProductsViewController {
-    
-    private func submitData(productName: String, productType: String, price: Double, tax: Double, image: UIImage?) {
-        let url = URL(string: "https://app.getswipe.in/api/public/add")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let boundary = "Boundary-\(UUID().uuidString)"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        let body = createFormBody(productName: productName, productType: productType, price: price, tax: tax, image: image, boundary: boundary)
-        request.httpBody = body
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                self.showLoading(false)
-            }
-            if let error = error {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return}
-                    self.showAlert(message: "Failed to submit: \(error.localizedDescription)")
-                }
-                return
-            }
-            
-            if let data = data, let responseDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let message = responseDict["message"] as? String {
-                        self.showAlert(message: message)
-                    }
-                    self.showLoading(false)
-                }
-            }
-            
-        }
-        task.resume()
-    }
-    
-    private func createFormBody(productName: String, productType: String, price: Double, tax: Double, image: UIImage?, boundary: String) -> Data {
-        
-        var body = Data()
-        
-        func appendValue(name: String, value: String) {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n".data(using: .utf8)!)
-            body.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        appendValue(name: "product_name", value: productName)
-        appendValue(name: "product_type", value: productType)
-        appendValue(name: "price", value: "\(price)")
-        appendValue(name: "tax", value: "\(tax)")
-        
-        if let image = image, let imageData = image.jpegData(compressionQuality: 0.8) {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"files[]\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-            body.append(imageData)
-            body.append("\r\n".data(using: .utf8)!)
-        }
-        
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        return body
-    }
     
     private func showLoading(_ show: Bool) {
         if show {

@@ -27,6 +27,9 @@
 		44050AB12CFE26C500AF5D3A /* SdWebImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44050AB02CFE26C500AF5D3A /* SdWebImage.swift */; };
 		44050AB42CFE270500AF5D3A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 44050AB32CFE270500AF5D3A /* SDWebImage */; };
 		44050AB62CFE270500AF5D3A /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 44050AB52CFE270500AF5D3A /* SDWebImageMapKit */; };
+		441EE5112CFF66830004D336 /* OfflineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EE5102CFF66830004D336 /* OfflineManager.swift */; };
+		441EE5132CFF66EF0004D336 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441EE5122CFF66EF0004D336 /* Network.swift */; };
+		441EE5192CFF73D20004D336 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 441EE5182CFF73D20004D336 /* IQKeyboardManagerSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +53,8 @@
 		44050AAC2CFE1EAA00AF5D3A /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		44050AAD2CFE1EAA00AF5D3A /* ProductTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductTableViewCell.xib; sourceTree = "<group>"; };
 		44050AB02CFE26C500AF5D3A /* SdWebImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdWebImage.swift; sourceTree = "<group>"; };
+		441EE5102CFF66830004D336 /* OfflineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineManager.swift; sourceTree = "<group>"; };
+		441EE5122CFF66EF0004D336 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +64,7 @@
 			files = (
 				44050AB62CFE270500AF5D3A /* SDWebImageMapKit in Frameworks */,
 				44050AB42CFE270500AF5D3A /* SDWebImage in Frameworks */,
+				441EE5192CFF73D20004D336 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				44050AA62CFE195100AF5D3A /* APIManager.swift */,
+				441EE5102CFF66830004D336 /* OfflineManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -185,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				44050AA42CFE181300AF5D3A /* EndPointType.swift */,
+				441EE5122CFF66EF0004D336 /* Network.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 			packageProductDependencies = (
 				44050AB32CFE270500AF5D3A /* SDWebImage */,
 				44050AB52CFE270500AF5D3A /* SDWebImageMapKit */,
+				441EE5182CFF73D20004D336 /* IQKeyboardManagerSwift */,
 			);
 			productName = Product_Swipe;
 			productReference = 44050A7A2CFE159600AF5D3A /* Product_Swipe.app */;
@@ -317,6 +326,8 @@
 			mainGroup = 44050A712CFE159600AF5D3A;
 			packageReferences = (
 				44050AB22CFE270500AF5D3A /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				441EE5142CFF6D170004D336 /* XCRemoteSwiftPackageReference "SkeletonView" */,
+				441EE5172CFF73D20004D336 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = 44050A7B2CFE159600AF5D3A /* Products */;
 			projectDirPath = "";
@@ -352,12 +363,14 @@
 				235A718C2CFEFFAB00A726C8 /* AddProducts.swift in Sources */,
 				44050AA52CFE181300AF5D3A /* EndPointType.swift in Sources */,
 				44050AAE2CFE1EAA00AF5D3A /* ProductTableViewCell.swift in Sources */,
+				441EE5132CFF66EF0004D336 /* Network.swift in Sources */,
 				44050AB12CFE26C500AF5D3A /* SdWebImage.swift in Sources */,
 				44050AA32CFE174A00AF5D3A /* ProductViewController.swift in Sources */,
 				44050AA92CFE1A0500AF5D3A /* ProductViewModel.swift in Sources */,
 				44050AA72CFE195100AF5D3A /* APIManager.swift in Sources */,
 				44050A7E2CFE159600AF5D3A /* AppDelegate.swift in Sources */,
 				23C74FDA2CFEDB0E000D9266 /* Alert.swift in Sources */,
+				441EE5112CFF66830004D336 /* OfflineManager.swift in Sources */,
 				44050A802CFE159600AF5D3A /* SceneDelegate.swift in Sources */,
 				44050AAB2CFE1AFD00AF5D3A /* Product.swift in Sources */,
 			);
@@ -590,6 +603,22 @@
 				minimumVersion = 5.20.0;
 			};
 		};
+		441EE5142CFF6D170004D336 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
+		441EE5172CFF73D20004D336 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -602,6 +631,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44050AB22CFE270500AF5D3A /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
+		};
+		441EE5182CFF73D20004D336 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 441EE5172CFF73D20004D336 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
